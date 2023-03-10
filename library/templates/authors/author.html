@@ -1,0 +1,18 @@
+{% extends 'layout.html' %} {% block content %}
+  <main>
+   <div class="container">
+       <div class="card" style="margin-top:50px;">
+          <div class="card-body">
+              <h3>Author ID: {{authors['author_id']}}</h3><hr>
+              <h3>Name: {{authors['author_full_name']}}</h3><hr>
+              <h3>His/Her books:</h3>
+              {% for book in books %}
+              <a href="book?id={{book['book_id']}}"><button type="button" class="btn btn-secondary" id="author_list_btn">
+                {{book['book_title']}}
+              </button></a>
+              {% endfor %}
+          </div>
+       </div>
+   </div>
+  </main>
+  {% endblock %}

@@ -1,0 +1,65 @@
+h1.home {
+    font-size: 250%;
+    margin-left: 5%;
+    color: white;
+}
+
+h4.home {
+    font-size: 100%;
+    margin-top: 50px;
+    margin-left: 25%;
+    color: white;
+}
+
+#books-con{
+    margin: 10px auto 30px 30px;
+}
+
+#author_list_btn{
+    margin: 10px;
+}
+
+body{
+    background-size: cover;
+}
+
+div#search_order_one{
+    height:5px;
+    order:1;
+}
+
+div#search_order_two{
+    order:2;
+}
+
+@media (max-width: 768px){
+    h1.home {
+        text-align: center;
+        color: white;
+    }
+
+    h4.home {
+        text-align: right;
+        color: white;
+    }
+
+    div#search_order_one{
+        order:2;
+    }
+
+    div#search_order_two{
+        order:1;
+    }
+
+    #order_one{
+        order:3;
+    }
+
+    #order_two{
+        order:1;
+    }
+
+    #order_three{
+        order:2;
+    }
+}

@@ -1,0 +1,49 @@
+{% extends 'layout.html' %} {% block content %}
+<main>
+    <div class="container">
+        {% if authors != None and authors != [] %}
+        <div class="card" style="margin-top:50px;">
+            <div class="card-body">
+                <h1>Authors list</h1>
+                <hr>
+                {% for author in authors %}
+                <a href="author?id={{author['author_id']}}">
+                    <button type="button" class="btn btn-secondary" id="author_list_btn">
+                        {{author['author_full_name']}}
+                    </button>
+                </a>
+                {% endfor %}
+                <hr>
+                <nav aria-label="pager">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item {% if page_num <= 1 %}disabled{% endif %}">
+                            <a class="page-link" href="authors?page={{page_num-1}}">Previous</a>
+                        </li>
+                        {% if page_num - 3 > 1 %}
+                        <li class="page-item"><a class="page-link" href="authors?page=1">1</a></li>
+                        <li class="page-item"><a class="page-link">…</a></li>
+                        {% endif %}
+                        {% for p in range(start_page,end_page+1) %}
+                        {% if page_num == p %}
+                        <li class="page-item active"><a class="page-link" href="authors?page={{p}}">{{p}}</a></li>
+                        {% else %}
+                        <li class="page-item"><a class="page-link" href="authors?page={{p}}">{{p}}</a></li>
+                        {% endif %}
+                        {% endfor %}
+                        {% if total_page - 3 > page_num and total_page not in range(start_page,end_page+1) %}
+                        <li class="page-item"><a class="page-link">…</a></li>
+                        <li class="page-item"><a class="page-link" href="authors?page={{total_page}}">{{total_page}}</a></li>
+                        {% endif %}
+                        <li class="page-item {% if end_page <= page_num %}disabled{% endif %}">
+                            <a class="page-link" href="authors?page={{page_num+1}}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        {% else %}
+        <h1>No Data Found</h1>
+        {% endif %}
+    </div>
+</main>
+{% endblock %}

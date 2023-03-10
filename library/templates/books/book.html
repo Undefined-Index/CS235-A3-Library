@@ -1,0 +1,79 @@
+{% extends 'layout.html' %} {% block content %}
+<main>
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.0/css/star-rating.min.css" media="all"
+          rel="stylesheet" type="text/css"/>
+    <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.0/js/star-rating.min.js"
+            type="text/javascript"></script>
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.0/themes/krajee-svg/theme.css"
+          media="all" rel="stylesheet" type="text/css"/>
+    <div class="container">
+        <div class="card" style="margin-top:50px;">
+            <div class="card-body">
+                {% if wanna_read %}
+                <div class="text-right"><h4><a href="add-want-to-read?ID={{book['book_id']}}"
+                                               class="bi bi-heart-fill"></a></h4></div>
+                {% else %}
+                <div class="text-right"><h4><a href="add-want-to-read?ID={{book['book_id']}}" class="bi bi-heart"></a>
+                </h4></div>
+                {% endif %}
+                <h3>Title: {{book['book_title']}}</h3>
+                <hr>
+                <h3>Authors: {% for author in book['authors'] %}<a href="author?id={{author['author_id']}}">{{author['author_full_name']
+                    + "\n"}}</a>{% endfor %}</h3>
+                <hr>
+                <h3>Publisher: <a href="publisher?name={{book['publisher_url']}}">{{book['publisher']}}</a></h3>
+                <hr>
+                <h3>Release year: {{book['release_year']}}</h3>
+                <hr>
+                <h3>Book page: {% if book['num_pages'] != None %}{{book['num_pages']}}{% else %}Unknow{% endif %} pages</h3>
+                <hr>
+                <h3>Book type: {% if book['ebook'] %}Ebook{% else %}Physical book{% endif %}</h3>
+                <hr>
+                <h3>Description: </h3>
+                <p>{{book['description']}}</p>
+                <hr>
+                <h3>Reviews:</h3>
+                <!--Print review-->
+                {% if reviews|length > 0 %}
+                {% for review in reviews %}
+                <div class="card">
+                    <div class="card-body">
+                        <p>User: {{review['user']}} rated it {% for review in range(review['rating']) %}<i
+                                class="bi bi-star-fill text-warning"></i>{% endfor %} at {{review['timestamp']}}</p>
+                        <p><i class="bi bi-chat-right-text"></i> {{review['review_text']}}</p>
+                    </div>
+                </div>
+                {% endfor %}
+                {% elif session.get('username') != None %}
+                <p>No one has reviewed it yet! To be the first reviewer!</p>
+                {% else %}
+                <p>No one has reviewed it yet! <a href="login">Login</a> to be the first reviewer!</p>
+                {% endif %}
+                {% if reviews|length > 0 and session.get('username') == None %}
+                <p><a href="login">Login</a> to review it!</p>
+                {% endif %}
+                <!--Print the review form if user login-->
+                {% if session.get('username') != None %}
+                <div class="card" style="margin-top:50px;">
+                    <div class="card-body">
+                        <form action="/book?id={{book.book_id}}" method="POST">
+                            <div class="form-group">
+                                <input id="rating" name="rating" type="number" class="rating" min=0 max=5 step=1
+                                       data-size="lg" required="required">
+                                <div class="form-group">
+                                    <label>Review</label>
+                                    <textarea class="form-control" name="review" id="review" rows="5"
+                                              required="required"></textarea>
+                                </div>
+                                <button class="btn btn-block btn-primary">Submit</button>
+                            </div>
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        </form>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
